@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        {% load static %}
+        <title>Read (All)</title>
+        <link rel="stylesheet" href="{% static 'tv_shows/css/bootstrap.min.css' %}">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    </head>
+    <body>
+        <h1 class="my-5">All Shows</h1>
+        <table class="table table-striped col-10 mx-auto">
+            <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Network</th>
+                    <th>Release Date</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for tv_show in tv_shows_list %}
+                <tr>
+                    <td>{{tv_show.id}}</td>
+                    <td>{{tv_show.title}}</td>
+                    <td>{{tv_show.network.name}}</td>
+                    <td>{{tv_show.release_date}}</td>
+                    <td>
+                        <a href="/shows/{{tv_show.id}}" alt="Show Details">Show</a> | 
+                        <a href="/shows/{{tv_show.id}}/edit" alt="Edit Show">Edit</a> |
+                        <a class="delete-confirm" href="/shows/{{tv_show.id}}/destroy" alt="Delete Show">Delete</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td>0</td>
+                    <td>No shows in database.</td>
+                    <td>N/A</td>
+                    <td>N/A</td>
+                    <td>N/A</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <br />
+        <a href="/shows/new" alt="Add Show">Add a New Show</a>
+        <script>
+                $(document).ready(function() {
+    
+                    $('.delete-confirm').click(function(e){
+                        e.stopPropagation();
+                        e.preventDefault();
+                        if (confirm("Do you wish to delete this show? This cannot be undone!")) {
+                            window.location.href = $(this).attr("href");
+                        } else {
+                            return false;
+                        }
+                    });
+    
+                });
+            </script>
+    </body>
+</html>

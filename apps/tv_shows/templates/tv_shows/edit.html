@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        {% load static %}
+        <title>Update</title>
+        <link rel="stylesheet" href="{% static 'tv_shows/css/bootstrap.min.css' %}">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    </head>
+    <body>
+        <p class="text-right"><a href="/shows" alt="Back">Go Back</a></p>
+        <div class="container col-8 mx-auto">
+            <h1 class="mx-auto">Edit Show {{tv_show.id}}</h1>
+            <form class="d-flex flex-wrap form-group col-10 mr-auto justify-content-between" action="/shows/{{tv_show.id}}/edit" method="POST">
+                {% csrf_token %}
+                <p class="col-12 text-muted">Fields left blank will update to blank in the database!</p>
+                <p>Title:</p>
+                <input class="form-control" type="text" name="title" value="{{tv_show.title}}">
+                <p class="mt-5 col-6">Network:</p>
+                <p class="mt-5 col-6">Release Date:</p>
+                <select class="d-inline-block form-control col-6" id="network" name="network">
+                    {% for network in networks %}
+                    {% if network == tv_show.network %}
+                    <option value="{{network.id}}" selected>{{network.name}}</option>
+                    {% else %}
+                    <option value="{{network.id}}">{{network.name}}</option>
+                    {% endif %}
+                    {% endfor %}
+                </select>
+                <input id="released" class="d-inline-block form-control col-6" type="date" name="released" value="{{tv_show.release_date.isoformat}}">
+                <p class="mt-5 d-block">Description:</p>
+                <textarea class="form-control" name="desc" id="description" rows="4">{{tv_show.description}}</textarea>
+                <input class="mt-5 form-control btn btn-lg btn-success col-4 mx-auto" type="submit" value="Update">
+            </form>
+            <a href="/shows/{{tv_show.id}}" alt="Show Details">Go to Show</a>
+        </div>
+    </body>
+</html>
