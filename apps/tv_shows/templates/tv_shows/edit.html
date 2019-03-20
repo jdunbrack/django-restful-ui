@@ -6,16 +6,34 @@
         <title>Update</title>
         <link rel="stylesheet" href="{% static 'tv_shows/css/bootstrap.min.css' %}">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <style>
+            .error {
+                font-size: .9rem;
+                color: red;
+            }
+            .success {
+                font-size: .9rem;
+                color: green;
+            }
+        </style>
     </head>
     <body>
         <p class="text-right"><a href="/shows" alt="Back">Go Back</a></p>
         <div class="container col-8 mx-auto">
             <h1 class="mx-auto">Edit Show {{tv_show.id}}</h1>
-            <form class="d-flex flex-wrap form-group col-10 mr-auto justify-content-between" action="/shows/{{tv_show.id}}/edit" method="POST">
+            {% if messages %}
+            <ul class="messages list-unstyled">
+                {% for message in messages %}
+                <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            <div id="warn"></div>
+            <form id="input" class="d-flex flex-wrap form-group col-10 mr-auto justify-content-between" action="/shows/{{tv_show.id}}/edit" method="POST">
                 {% csrf_token %}
                 <p class="col-12 text-muted">Fields left blank will update to blank in the database!</p>
                 <p>Title:</p>
-                <input class="form-control" type="text" name="title" value="{{tv_show.title}}">
+                <input class="form-control" id="title" type="text" name="title" value="{{tv_show.title}}">
                 <p class="mt-5 col-6">Network:</p>
                 <p class="mt-5 col-6">Release Date:</p>
                 <select class="d-inline-block form-control col-6" id="network" name="network">
@@ -30,9 +48,12 @@
                 <input id="released" class="d-inline-block form-control col-6" type="date" name="released" value="{{tv_show.release_date.isoformat}}">
                 <p class="mt-5 d-block">Description:</p>
                 <textarea class="form-control" name="desc" id="description" rows="4">{{tv_show.description}}</textarea>
+                <input type="hidden" name="id" value="{{tv_show.id}}">
                 <input class="mt-5 form-control btn btn-lg btn-success col-4 mx-auto" type="submit" value="Update">
             </form>
+
             <a href="/shows/{{tv_show.id}}" alt="Show Details">Go to Show</a>
         </div>
+        <script src="{% static 'tv_shows/js/main.js' %}"></script>
     </body>
 </html>

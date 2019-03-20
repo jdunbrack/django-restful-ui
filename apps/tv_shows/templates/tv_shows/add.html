@@ -5,9 +5,18 @@
         {% load static %}
         <title>Create</title>
         <link rel="stylesheet" href="{% static 'tv_shows/css/bootstrap.min.css' %}">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <style>
             * {
                 box-sizing: border-box;
+            }
+            .error {
+                font-size: .9rem;
+                color: red;
+            }
+            .success {
+                font-size: .9rem;
+                color: green;
             }
         </style>
     </head>
@@ -15,7 +24,15 @@
         <p class="text-right"><a href="/shows" alt="Back">Go Back</a></p>
         <div class="container col-8 mx-auto">
             <h1>Add a New Show</h1>
-            <form class="d-flex flex-wrap form-group col-10 mr-auto justify-content-between" action="/shows/new" method="POST">
+            {% if messages %}
+            <ul class="messages list-unstyled">
+                {% for message in messages %}
+                <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            <div id="warn"></div>
+            <form id="input" class="d-flex flex-wrap form-group col-10 mr-auto justify-content-between" action="/shows/new" method="POST">
                 {% csrf_token %}
                 <p>Title:</p>
                 <input class="form-control" type="text" id="title" name="title">
@@ -31,6 +48,8 @@
                 <textarea class="form-control" name="desc" id="description" rows="4"></textarea>
                 <input class="mt-5 form-control btn btn-lg btn-success col-4 mx-auto" type="submit" value="Create">
             </form>
+
         </div>
+        <script src="{% static 'tv_shows/js/main.js' %}"></script>
     </body>
 </html>
