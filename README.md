@@ -1,0 +1,1 @@
+This is a simple Django website that effectively handles RESTful API information through a front-end interface for simple data about TV shows. This was done as a learning excersize for data manipulation through Django and its templating language. All styling done using Bootstrap.
